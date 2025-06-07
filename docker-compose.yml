@@ -1,0 +1,16 @@
+services:
+  mqtt:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./docker/mosquitto:/mosquitto/config
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mqtt
+    environment:
+      - MQTT_BROKER=tcp://mqtt:1883
